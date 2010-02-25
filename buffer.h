@@ -11,7 +11,7 @@
 struct buffer
 {
 	unsigned int size;
-	unsigned int counter;
+	volatile unsigned int counter;
 	uint8_t *end;
 	uint8_t *begin;
 	volatile uint8_t *read;
