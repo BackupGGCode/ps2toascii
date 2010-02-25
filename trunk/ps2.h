@@ -24,7 +24,7 @@
 #include "buffer.h"
 
 enum STATE {TRANSMITING, RECIVING, IDLE, ERROR};
-enum RX_COUNTER {START = -1, D0 = 0, D1 = 1, D2 = 2, D3 = 3, D4 = 4, D5 = 5, D6 = 6, D7 = 7, PARITY = 8 , STOP = 9};
+enum COUNTER {START = -1, D0 = 0, D1 = 1, D2 = 2, D3 = 3, D4 = 4, D5 = 5, D6 = 6, D7 = 7, PARITY = 8 , STOP = 9};
 enum TR_MSG {RESEND = 0xFE};
 
 struct ps2_conn

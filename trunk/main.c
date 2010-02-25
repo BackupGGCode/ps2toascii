@@ -7,6 +7,7 @@
 
 #include <avr/interrupt.h>
 #include "ps2.h"
+#include "buffer.h"
 
 struct ps2_conn *ps2;
 
@@ -14,18 +15,15 @@ ISR(INT0_vect )
 {
 	extern struct ps2_conn *ps2;
     ps2_handle(ps2);
-	//buffer_read(ps2->rx_buf, (uint8_t *) & PORTC);
-/*
-    if (PORTC == 0xff)
-    	PORTC = 0x00;
-    else
-    	PORTC = 0xff;
-*/
+    buffer_read (ps2->rx_buf, (uint8_t *) &PORTC);
 }
 
 int main ( void )
 {
 
+	struct buffer *buf;
+	buf = buffer_create (2);
+	
 	extern struct ps2_conn *ps2;
 	ps2 = ps2_conn_create();
 
@@ -33,20 +31,26 @@ int main ( void )
 
 	DDRA = 0xfc;
 
-	//PORTA =0xFF;
 	GICR |= (1 << PS2_KBD_INT);
 	GIMSK |= (1 << PS2_KBD_INT);
-	  // TCCR0 |= (1<<CS00);
-	   // TIMSK |= (1<<TOIE0);
 
 	ps2_prepare_recive (ps2);
 
     sei();
+/*
+	buffer_clear(buf);
+	
+	buffer_write (buf, 8);
+	buffer_write (buf, 16);
+	buffer_write (buf, 32);
 
+	buffer_read (buf, (uint8_t *) &DDRC);
+	buffer_read (buf, (uint8_t *) &DDRC);
+	buffer_read (buf, (uint8_t *) &DDRC);
+*/
 	for (;;)
 	{
-		DDRC=0xff;
-		PORTC += 1;
+		
 	}
 
 	return 0;

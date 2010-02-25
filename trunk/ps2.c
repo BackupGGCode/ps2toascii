@@ -127,7 +127,8 @@ void ps2_transmit (struct ps2_conn *conn, enum TR_MSG msg)
 void ps2_prepare_recive(struct ps2_conn *conn)
 {
 	//conn->state = RECIVING;
-	MCUCR |= (1 << ISC01) | (0 << ISC00);					// set low edge interrupt
+	MCUCR |= (1 << ISC01);
+	MCUCR &= ~(1 << ISC00);					// set low edge interrupt
 }
 
 void ps2_prepare_transmit(struct ps2_conn *conn)

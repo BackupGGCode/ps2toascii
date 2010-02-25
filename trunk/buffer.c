@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include "buffer.h"
 #include "ps2.h"
 
@@ -49,7 +50,7 @@ void buffer_clear(struct buffer * buf)
 
 void buffer_read(struct buffer * buf, uint8_t *dest)
 {
-	GIMSK |= (0 << PS2_KBD_INT);
+	cli();
 	if (buffer_is_empty(buf) == 0)
 	{
 		(*dest) = *(buf->read);
@@ -57,13 +58,15 @@ void buffer_read(struct buffer * buf, uint8_t *dest)
 			buf->read++;
 		else
 			buf->read = buf->begin;
+
+		buf->counter--;
 	}
-	GIMSK |= (1 << PS2_KBD_INT);
+	sei();
 }
 
 void buffer_write(struct buffer * buf, uint8_t value)
 {
-	GIMSK |= (0 << PS2_KBD_INT);
+	cli();
 	if (buffer_is_full (buf) == 0)
 	{
 		*(buf->write) = value;
@@ -72,13 +75,15 @@ void buffer_write(struct buffer * buf, uint8_t value)
 			buf->write++;
 		else
 			buf->write = buf->begin;
+
+		buf->counter++;
 	}
-	GIMSK |= (01 << PS2_KBD_INT);
+	sei();
 }
 
 uint8_t buffer_is_empty (struct buffer * buf)
 {
-	if (buf->write == buf->read)
+	if (buf->counter == 0)
 	{
 		return 1;
 	}
@@ -91,7 +96,7 @@ uint8_t buffer_is_empty (struct buffer * buf)
 
 uint8_t buffer_is_full (struct buffer * buf)
 {
-	if ( ((buf->write) +1) == buf->read)
+	if (buf->counter == buf->size)
 	{
 		return 1;
 	}
