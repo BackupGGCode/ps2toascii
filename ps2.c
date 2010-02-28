@@ -97,6 +97,8 @@ void ps2_handle (struct ps2_conn *conn)
 				else
 				{
 					buffer_write (conn->rx_buf, conn->data);
+					conn->data =0;
+					conn->counter = -2;
 				}
 			}
 
@@ -107,8 +109,8 @@ void ps2_handle (struct ps2_conn *conn)
 			break;
 
 		case ERROR:
-			ps2_transmit (conn, RESEND);
-			ps2_prepare_transmit (conn);
+			//ps2_transmit (conn, RESEND);
+			//ps2_prepare_transmit (conn);
 			break;
 	}
 
