@@ -6,6 +6,7 @@
  */
 
 #include <avr/interrupt.h>
+#include <util/parity.h>
 #include "ps2.h"
 #include "buffer.h"
 
@@ -47,10 +48,11 @@ int main ( void )
 	buffer_read (buf, (uint8_t *) &DDRC);
 	buffer_read (buf, (uint8_t *) &DDRC);
 	buffer_read (buf, (uint8_t *) &DDRC);
-*/
-	for (;;)
+*/	
+
+	while (1)
 	{
-		
+		DDRB ++;
 	}
 
 	return 0;
