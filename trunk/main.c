@@ -12,11 +12,11 @@
 
 struct ps2_conn *ps2;
 
-ISR(INT0_vect )
+ISR(INT0_vect,  ISR_NOBLOCK)
 {
 	extern struct ps2_conn *ps2;
     ps2_handle(ps2);
-    buffer_read (ps2->rx_buf, (uint8_t *) &PORTC);
+    //buffer_read (ps2->rx_buf, (uint8_t *) &PORTC);
 }
 
 int main ( void )
