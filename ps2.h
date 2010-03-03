@@ -23,6 +23,7 @@
 #include <stdint.h>
 #include "buffer.h"
 
+enum SPECIAL_KEYS = 
 enum STATE {TRANSMITING, RECIVING, IDLE, ERROR};
 enum COUNTER {START = -1, D0 = 0, D1 = 1, D2 = 2, D3 = 3, D4 = 4, D5 = 5, D6 = 6, D7 = 7, PARITY = 8 , STOP = 9};
 enum TR_MSG {RESEND = 0xFE};
@@ -56,5 +57,7 @@ void ps2_recive (struct ps2_conn *conn);
 void ps2_error (struct ps2_conn *conn);
 
 uint8_t ps2_tx_is_not_empty(struct ps2_conn *conn);
+
+void ps2_analyze_rx (struct ps2_conn *conn);
 
 #endif /* PS2_H_ */
